@@ -119,6 +119,12 @@
             </Component>
             <Component class="javax.swing.JButton" name="loginButton">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="66" red="33" type="rgb"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Log in"/>
               </Properties>
               <Events>
@@ -278,6 +284,12 @@
             </Component>
             <Component class="javax.swing.JButton" name="signupButton">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="66" red="33" type="rgb"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Sign up"/>
               </Properties>
               <Events>
@@ -387,6 +399,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="resetUserField">
+              <Events>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="resetUserFieldFocusLost"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="resetPhoneLabel">
               <Properties>
@@ -394,6 +409,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="resetPhoneField">
+              <Events>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="resetPhoneFieldFocusLost"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="resetEmailLabel">
               <Properties>
@@ -401,6 +419,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="resetEmailField">
+              <Events>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="resetEmailFieldFocusLost"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="resetPassLabel">
               <Properties>
@@ -430,6 +451,12 @@
             </Component>
             <Component class="javax.swing.JButton" name="resetButton">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="66" red="33" type="rgb"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Confirm"/>
               </Properties>
               <Events>

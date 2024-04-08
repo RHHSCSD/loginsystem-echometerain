@@ -38,7 +38,7 @@ public final class Storage {
 			loadBadPass();
 		} catch (FileNotFoundException ex) {
 			// quit if cannot find bad passwords file
-			System.err.println("Bad passwords file not found!!!");
+			System.err.println("Bad passwords file not found, exiting!!!");
 			System.exit(1);
 		}
 	}
@@ -61,8 +61,9 @@ public final class Storage {
 				getWrite().print(e.getSecurityQuestion() + DELIM);
 				getWrite().print(e.getSecurityAnswer() + "\n");
 			}
+			getWrite().close();
 		} catch (FileNotFoundException ex) {
-			System.err.println("Cannot access user file path!!!");
+			System.err.println("Cannot access user file path, exiting!!!");
 			System.exit(1);
 		}
 	}
@@ -82,7 +83,9 @@ public final class Storage {
 				}
 				getUsers().put(data[0], new User(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]));
 			}
+			getS().close();
 		} catch (FileNotFoundException ex) {
+			System.out.println("No user data found");
 		}
 	}
 
@@ -97,6 +100,7 @@ public final class Storage {
 		while (getS().hasNextLine()) {
 			getBadPass().add(getS().nextLine());
 		}
+		getS().close();
 	}
 
 	/**

@@ -12,13 +12,14 @@ import javax.swing.*;
  */
 public class LoginSystem extends javax.swing.JFrame {
 
-	private RegistrationSystem regSys = new RegistrationSystem();
-	private User currentUser;
+	private final RegistrationSystem regSys;
+	private String resetUsername; // prevent redundent storage access when retrieving security question
 
 	/**
 	 * Creates new form LoginSystem
 	 */
 	public LoginSystem() {
+		this.regSys = new RegistrationSystem(this);
 		this.setIconImage(new ImageIcon("./icon.png").getImage());
 		initComponents();
 	}
@@ -82,6 +83,8 @@ public class LoginSystem extends javax.swing.JFrame {
 
         loginPassLabel.setText("Username");
 
+        loginButton.setBackground(new java.awt.Color(51, 102, 255));
+        loginButton.setForeground(new java.awt.Color(255, 255, 255));
         loginButton.setText("Log in");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -149,6 +152,8 @@ public class LoginSystem extends javax.swing.JFrame {
 
         signupAnswerLabel.setText("Security Answer");
 
+        signupButton.setBackground(new java.awt.Color(51, 102, 255));
+        signupButton.setForeground(new java.awt.Color(255, 255, 255));
         signupButton.setText("Sign up");
         signupButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,9 +231,27 @@ public class LoginSystem extends javax.swing.JFrame {
 
         resetUserLabel.setText("Username");
 
+        resetUserField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                resetUserFieldFocusLost(evt);
+            }
+        });
+
         resetPhoneLabel.setText("Phone Number");
 
+        resetPhoneField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                resetPhoneFieldFocusLost(evt);
+            }
+        });
+
         resetEmailLabel.setText("Email Address");
+
+        resetEmailField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                resetEmailFieldFocusLost(evt);
+            }
+        });
 
         resetPassLabel.setText("New Password [i]");
 
@@ -238,6 +261,8 @@ public class LoginSystem extends javax.swing.JFrame {
 
         resetAnswerLabel.setText("Answer:");
 
+        resetButton.setBackground(new java.awt.Color(51, 102, 255));
+        resetButton.setForeground(new java.awt.Color(255, 255, 255));
         resetButton.setText("Confirm");
         resetButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -332,16 +357,99 @@ public class LoginSystem extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-		// TODO add your handling code here:
+		String username = loginUserField.getText();
+		String password = String.valueOf(loginPassField.getPassword());
+		String twoFACode = String.valueOf(login2FAField.getPassword());
+		if (regSys.login(username, password, twoFACode)) {
+			clearFields();
+		}
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void signupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupButtonActionPerformed
-		// TODO add your handling code here:
+		String username = signupUserField.getText();
+		String password = String.valueOf(signupPassField.getPassword());
+		String repeat = String.valueOf(signupRepeatField.getPassword());
+		String email = signupEmailField.getText();
+		String phone = signupPhoneField.getText();
+		String securityQuestion = signupQuestionField.getText();
+		String securityAnswer = signupAnswerField.getText();
+		if (!password.equals(repeat)) {
+			regSys.showError("Passwords do not match!!!");
+			return;
+		}
+		if (regSys.register(username, password, email, phone, securityQuestion, securityAnswer)) {
+			clearFields();
+		}
     }//GEN-LAST:event_signupButtonActionPerformed
 
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
-		// TODO add your handling code here:
+		String username = resetUserField.getText();
+		String newPass = String.valueOf(resetPassField.getPassword());
+		String repeat = String.valueOf(resetRepeatField.getPassword());
+		String email = resetEmailField.getText();
+		String phone = resetPhoneField.getText();
+		String securityAnswer = signupAnswerField.getText();
+		if (!newPass.equals(repeat)) {
+			regSys.showError("Passwords do not match!!!");
+			return;
+		}
+		if (regSys.resetPassword(username, newPass, phone, email, securityAnswer)) {
+			clearFields();
+		}
     }//GEN-LAST:event_resetButtonActionPerformed
+
+    private void resetEmailFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_resetEmailFieldFocusLost
+		updateSecurityQuestion();
+    }//GEN-LAST:event_resetEmailFieldFocusLost
+
+    private void resetPhoneFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_resetPhoneFieldFocusLost
+		updateSecurityQuestion();
+    }//GEN-LAST:event_resetPhoneFieldFocusLost
+
+    private void resetUserFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_resetUserFieldFocusLost
+		updateSecurityQuestion();
+    }//GEN-LAST:event_resetUserFieldFocusLost
+
+	/**
+	 * Update security question label
+	 */
+	public void updateSecurityQuestion() {
+		String username = resetUserField.getText();
+		String email = resetEmailField.getText();
+		String phone = resetPhoneField.getText();
+		// prevent retrieving question again when username hasn't changed
+		if (username.equals(resetUsername)) {
+			return;
+		}
+		// exit if fields empty
+		if (username.length() == 0 || email.length() == 0 || phone.length() == 0) {
+			return;
+		}
+		resetQuestion.setText("Question: " + regSys.retrieveSecurityQuestion(username, email, phone));
+		resetUsername = username;
+	}
+
+	/**
+	 * Clear all input after a success
+	 */
+	public void clearFields() {
+		login2FAField.setText("");
+		loginPassField.setText("");
+		resetPassField.setText("");
+		resetRepeatField.setText("");
+		signupPassField.setText("");
+		signupRepeatField.setText("");
+		loginUserField.setText("");
+		resetAnswerField.setText("");
+		resetEmailField.setText("");
+		resetPhoneField.setText("");
+		resetUserField.setText("");
+		signupAnswerField.setText("");
+		signupEmailField.setText("");
+		signupPhoneField.setText("");
+		signupQuestionField.setText("");
+		signupUserField.setText("");
+	}
 
 	/**
 	 * @param args the command line arguments
