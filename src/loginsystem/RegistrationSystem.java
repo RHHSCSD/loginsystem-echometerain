@@ -208,7 +208,7 @@ public class RegistrationSystem {
 	 */
 	public boolean check2FA(String secret, int code) {
 		try {
-			if (TimeBasedOneTimePasswordUtil.validateCurrentNumber(secret, code, TWOFA_WINDOW)) {
+			if (!TimeBasedOneTimePasswordUtil.validateCurrentNumber(secret, code, TWOFA_WINDOW)) {
 				showError("Incorrect 2FA verification code!!!");
 				return false;
 			}
@@ -221,8 +221,8 @@ public class RegistrationSystem {
 	/**
 	 * Generate 2FA code seed
 	 *
-	 * The library uses SHA-256 to generate codes, your authenticator app will
-	 * ask for this
+	 * The library uses SHA-1 to generate codes (your authenticator app will ask
+	 * for this)
 	 *
 	 * @param user
 	 */
