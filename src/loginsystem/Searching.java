@@ -18,9 +18,9 @@ public class Searching {
 			if (list[mid].equals(term)) {
 				return mid;
 			} else if (term.compareTo(list[mid]) > 1) {
-				lo = mid;
+				lo = mid + 1;
 			} else {
-				hi = mid;
+				hi = mid - 1;
 			}
 		}
 		return -1;
