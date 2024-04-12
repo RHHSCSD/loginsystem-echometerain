@@ -10,14 +10,14 @@ package loginsystem;
  */
 public class Searching {
 
-	public static int binarySearch(String term, String[] list) {
+	public static int binarySearch(Comparable term, Comparable[] list) {
 		int lo = 0;
-		int hi = list.length;
-		while (lo != hi) {
+		int hi = list.length - 1;
+		while (lo <= hi) {
 			int mid = (lo + hi) >> 1;
 			if (list[mid].equals(term)) {
 				return mid;
-			} else if (term.compareTo(list[mid]) > 1) {
+			} else if (term.compareTo(list[mid]) > 0) {
 				lo = mid + 1;
 			} else {
 				hi = mid - 1;
@@ -26,12 +26,18 @@ public class Searching {
 		return -1;
 	}
 
-	public static int seqSearch(String term, String[] list) {
+	public static int seqSearch(Comparable term, Comparable[] list) {
 		for (int i = 0; i < list.length; i++) {
 			if (list[i].equals(term)) {
 				return i;
 			}
 		}
 		return -1;
+	}
+
+	public static void main(String[] args) {
+		Comparable[] arr = new Comparable[]{1, 3, 5, 6, 8, 9, 23};
+		System.out.println(binarySearch(9, arr));
+		System.out.println(seqSearch(9, arr));
 	}
 }

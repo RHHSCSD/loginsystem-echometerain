@@ -89,7 +89,7 @@ public class RegistrationSystem {
 	 */
 	public boolean login(String username, String password, String twoFACode) {
 		// find user
-		HashMap<String, User> users = store.getUsers();
+		TreeMap<String, User> users = store.getUsers();
 		if (!users.containsKey(username)) {
 			showError("User not found!!!");
 			return false;

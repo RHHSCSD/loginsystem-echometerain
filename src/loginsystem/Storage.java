@@ -27,7 +27,7 @@ public final class Storage {
 	private HashSet<String> badPass = new HashSet<>();
 	private PrintWriter write = null;
 	private Scanner s;
-	private HashMap<String, User> users = new HashMap<>();
+	private TreeMap<String, User> users = new TreeMap<>();
 
 	/**
 	 * Load data from disk
@@ -148,14 +148,14 @@ public final class Storage {
 	/**
 	 * @return the users
 	 */
-	public HashMap<String, User> getUsers() {
+	public TreeMap<String, User> getUsers() {
 		return users;
 	}
 
 	/**
 	 * @param users the users to set
 	 */
-	public void setUsers(HashMap<String, User> users) {
+	public void setUsers(TreeMap<String, User> users) {
 		this.users = users;
 	}
 
